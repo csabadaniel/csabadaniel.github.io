@@ -1,1 +1,0 @@
-# csabadaniel.github.io
