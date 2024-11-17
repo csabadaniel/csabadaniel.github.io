@@ -10,6 +10,7 @@ function init() {
   };
   Blockly.inject('blocklyDiv', {
     toolbox: toolbox,
+    horizontalLayout: true,
     zoom: {
       startScale: 3.0
     }
