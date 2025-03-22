@@ -3,7 +3,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@statsig/js-client@3/build/statsig-js-client+session-replay+web-analytics.min.js?apikey=client-IR6eXulapZXM1GvuKTblnpSWCvMlTLnihnuhhO98bI5"> </script>
     <script>
       async function initStatsig() {
-        await statsig.initialize('<YOUR_CLIENT_SDK_KEY>', { userID: 'user123' });
+        await statsig.initialize('client-IR6eXulapZXM1GvuKTblnpSWCvMlTLnihnuhhO98bI5', { userID: 'user123' });
         const featureEnabled = await statsig.checkGate('your_feature_gate');
         if (featureEnabled) {
           document.getElementById('feature-content').style.display = 'block';
