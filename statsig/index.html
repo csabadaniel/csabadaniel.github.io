@@ -7,7 +7,7 @@
         const client = new StatsigClient('client-IR6eXulapZXM1GvuKTblnpSWCvMlTLnihnuhhO98bI5', { userID: 'user123' });
         await client.initializeAsync();
         
-        const featureEnabled = await statsig.checkGate('your_feature_gate');
+        const featureEnabled = await client.checkGate('your_feature_gate');
         if (featureEnabled) {
           document.getElementById('feature-content').style.display = 'block';
         }
