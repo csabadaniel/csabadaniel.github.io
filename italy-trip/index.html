@@ -167,20 +167,67 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      if (typeof L === "undefined" || !document.getElementById("airports-map")) return;
-      var map = L.map("airports-map").setView([44.8, 9.8], 7);
+      if (typeof L === "undefined" || !document.getElementById("itinerary-map")) return;
+
+      const map = L.map("itinerary-map").setView([44.8, 9.8], 7);
+
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "© <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
       }).addTo(map);
-      [
-        [45.6694, 9.7042, "BGY - Milan Bergamo"],
-        [45.6306, 8.7231, "MXP - Milan Malpensa"],
-        [44.4133, 8.8375, "GOA - Genoa"],
-        [44.5354, 11.2887, "BLQ - Bologna"],
-        [44.8245, 10.2964, "PMF - Parma"],
-        [43.6839, 10.3927, "PSA - Pisa"]
-      ].forEach(function (a) {
-        L.marker([a[0], a[1]]).addTo(map).bindPopup(a[2]);
+
+      const colorByType = {
+        airport: "#2563eb",
+        city:    "#16a34a",
+        sight:   "#7c3aed",
+        food:    "#dc2626",
+        default: "#6b7280"
+      };
+
+      const pois = [
+        // Airports
+        { lat: 45.6694, lng:  9.7042, name: "BGY - Milan Bergamo",  type: "airport" },
+        { lat: 45.6306, lng:  8.7231, name: "MXP - Milan Malpensa", type: "airport" },
+        { lat: 44.4133, lng:  8.8375, name: "GOA - Genoa",          type: "airport" },
+        { lat: 44.5354, lng: 11.2887, name: "BLQ - Bologna",        type: "airport" },
+        { lat: 44.8245, lng: 10.2964, name: "PMF - Parma",          type: "airport" },
+        { lat: 43.6839, lng: 10.3927, name: "PSA - Pisa",           type: "airport" },
+
+        // Cities
+        { lat: 45.4642, lng:  9.1900, name: "Milan",                type: "city" },
+        { lat: 44.4949, lng: 11.3426, name: "Bologna",              type: "city" },
+        { lat: 44.6488, lng: 10.9255, name: "Modena",               type: "city" },
+        { lat: 45.4384, lng: 10.9916, name: "Verona",               type: "city" },
+        { lat: 44.4056, lng:  8.9463, name: "Genoa",                type: "city" },
+
+        // Sights
+        { lat: 44.5309, lng: 10.8701, name: "Ferrari Museum, Maranello",              type: "sight" },
+        { lat: 44.1351, lng:  9.6837, name: "Cinque Terre (Vernazza)",                type: "sight" },
+        { lat: 43.7230, lng: 10.3966, name: "Leaning Tower of Pisa",                 type: "sight" },
+        { lat: 45.4641, lng:  9.1919, name: "Milan Duomo",                           type: "sight" },
+        { lat: 45.4602, lng:  9.1724, name: "Leonardo Museum of Science & Technology", type: "sight" },
+        { lat: 45.4781, lng:  9.1240, name: "San Siro Stadium",                      type: "sight" },
+        { lat: 45.6156, lng:  9.2811, name: "Monza F1 Circuit",                      type: "sight" },
+        { lat: 45.4705, lng:  9.1794, name: "Castello Sforzesco",                    type: "sight" },
+        { lat: 45.4659, lng:  9.1701, name: "The Last Supper (Cenacolo)",            type: "sight" },
+        { lat: 45.4659, lng:  9.1895, name: "Galleria Vittorio Emanuele II",         type: "sight" },
+        { lat: 44.3035, lng:  9.2099, name: "Portofino",                             type: "sight" },
+        { lat: 44.3347, lng:  9.2138, name: "Santa Margherita Ligure",               type: "sight" },
+        { lat: 45.4385, lng: 10.9937, name: "Verona Arena",                          type: "sight" },
+
+        // Food & workshops
+        { lat: 45.4642, lng:  9.1900, name: "Pizza-making class (Milan)",            type: "food" },
+        { lat: 45.4642, lng:  9.1850, name: "Gelato & chocolate workshop (Milan)",   type: "food" }
+      ];
+
+      pois.forEach(function (p) {
+        const color = colorByType[p.type] || colorByType.default;
+        L.circleMarker([p.lat, p.lng], {
+          radius: 7,
+          color: color,
+          fillColor: color,
+          fillOpacity: 0.9,
+          weight: 2
+        }).addTo(map).bindPopup("<b>" + p.name + "</b><br>" + p.type);
       });
     });
   </script>
@@ -221,11 +268,6 @@ service as it is limited</li>
 <li>Pisa (PSA) - useful for western Tuscany / Ligurian side
 connections</li>
 </ul>
-<div id="airports-map" role="region"
-aria-label="Map of candidate Italian airports"
-style="height:480px;margin:1rem 0;">
-
-</div>
 <h2 id="open-jaw-ideas-stn-both-ways">Open-Jaw Ideas (STN both
 ways)</h2>
 <ul>
@@ -236,6 +278,11 @@ ways)</h2>
 October availability in Ryanair before booking.</p>
 <h2 id="top-attractions-things-to-do-with-kids">Top Attractions &amp;
 Things to Do with Kids</h2>
+<div id="itinerary-map" role="region"
+aria-label="Map of itinerary locations"
+style="height:480px;margin:1rem 0;">
+
+</div>
 <blockquote>
 <p>Public transport is preferred. Milan city-centre attractions are
 walkable from the main train station and have no separate access note.
