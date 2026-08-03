@@ -164,30 +164,109 @@
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <style>
+    .map-legend {
+      margin: -0.25rem 0 1rem 0;
+      font-size: 0.9rem;
+      color: #374151;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      align-items: center;
+    }
+
+    .map-legend-label {
+      font-weight: 600;
+      margin-right: 0.1rem;
+    }
+
+    .map-legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      white-space: nowrap;
+    }
+
+    .map-legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .legend-airport { background: #2563eb; }
+    .legend-city { background: #059669; }
+    .legend-hotel { background: #f59e0b; }
+    .legend-sight { background: #7c3aed; }
+    .legend-food { background: #dc2626; }
+  </style>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      if (typeof L === "undefined" || !document.getElementById("itinerary-map")) return;
-
-      const map = L.map("itinerary-map").setView([45.15, 9.80], 8);
-
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: "© <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
-      }).addTo(map);
+      if (typeof L === "undefined") return;
 
       const colorByType = {
         airport: "#2563eb",
         hotel:   "#f59e0b",
         sight:   "#7c3aed",
         food:    "#dc2626",
+        city:    "#059669",
         default: "#6b7280"
       };
 
-      const pois = [
-        // Airports
+      function createMap(mapId, fallbackCenter, fallbackZoom, points) {
+        const mapElement = document.getElementById(mapId);
+        if (!mapElement) return;
+
+        const map = L.map(mapId).setView(fallbackCenter, fallbackZoom);
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution: "© <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
+        }).addTo(map);
+
+        const markerPoints = [];
+
+        points.forEach(function (p) {
+          const color = colorByType[p.type] || colorByType.default;
+          L.circleMarker([p.lat, p.lng], {
+            radius: 7,
+            color: color,
+            fillColor: color,
+            fillOpacity: 0.9,
+            weight: 2
+          }).addTo(map).bindPopup("<b>" + p.name + "</b><br>" + p.type);
+
+          markerPoints.push([p.lat, p.lng]);
+        });
+
+        if (markerPoints.length > 1) {
+          map.fitBounds(markerPoints, { padding: [24, 24] });
+        }
+      }
+
+      function createLegend(legendId, entries) {
+        const legendElement = document.getElementById(legendId);
+        if (!legendElement) return;
+
+        const itemsHtml = entries
+          .map(function (entry) {
+            return "<span class=\"map-legend-item\"><span class=\"map-legend-dot " + entry.colorClass + "\"></span>" + entry.label + "</span>";
+          })
+          .join("");
+
+        legendElement.className = "map-legend";
+        legendElement.innerHTML = "<span class=\"map-legend-label\">Legend:</span>" + itemsHtml;
+      }
+
+      const regionalPois = [
+        // Airports + regional anchors
         { lat: 45.6694, lng:  9.7042, name: "BGY - Milan Bergamo",                     type: "airport" },
         { lat: 45.6306, lng:  8.7231, name: "MXP - Milan Malpensa",                    type: "airport" },
+        { lat: 45.4642, lng:  9.1900, name: "Milan City Centre (Duomo area)",         type: "city" },
+        { lat: 44.5309, lng: 10.8701, name: "Ferrari Museum, Maranello",               type: "sight" }
+      ];
 
+      const milanCityPois = [
         // Recommended hotel base areas
         { lat: 45.5178, lng:  9.2310, name: "Sesto Marelli / Sesto San Giovanni",      type: "hotel" },
         { lat: 45.4832, lng:  9.2328, name: "Lambrate / Città Studi",                  type: "hotel" },
@@ -195,8 +274,7 @@
         { lat: 45.4665, lng:  9.1450, name: "Bande Nere / Gambara / De Angeli",        type: "hotel" },
         { lat: 45.5062, lng:  9.1843, name: "Affori / Dergano / Maciachini",           type: "hotel" },
 
-        // Sights
-        { lat: 44.5309, lng: 10.8701, name: "Ferrari Museum, Maranello",               type: "sight" },
+        // Milan sights and activities
         { lat: 45.4641, lng:  9.1919, name: "Milan Duomo",                             type: "sight" },
         { lat: 45.4656, lng:  9.1887, name: "Leonardo3 Museum",                        type: "sight" },
         { lat: 45.4602, lng:  9.1724, name: "Leonardo Museum of Science & Technology", type: "sight" },
@@ -204,21 +282,25 @@
         { lat: 45.4705, lng:  9.1794, name: "Castello Sforzesco",                      type: "sight" },
         { lat: 45.4659, lng:  9.1701, name: "The Last Supper (Cenacolo)",              type: "sight" },
         { lat: 45.4659, lng:  9.1895, name: "Galleria Vittorio Emanuele II",           type: "sight" },
-
-        // Food & workshops
         { lat: 45.4642, lng:  9.1900, name: "Pizza, chocolate and gelato workshops",   type: "food" }
       ];
 
-      pois.forEach(function (p) {
-        const color = colorByType[p.type] || colorByType.default;
-        L.circleMarker([p.lat, p.lng], {
-          radius: 7,
-          color: color,
-          fillColor: color,
-          fillOpacity: 0.9,
-          weight: 2
-        }).addTo(map).bindPopup("<b>" + p.name + "</b><br>" + p.type);
-      });
+      const regionalLegend = [
+        { colorClass: "legend-airport", label: "Airports" },
+        { colorClass: "legend-city", label: "Milan city centre" },
+        { colorClass: "legend-sight", label: "Ferrari Museum" }
+      ];
+
+      const milanLegend = [
+        { colorClass: "legend-hotel", label: "Hotel areas" },
+        { colorClass: "legend-sight", label: "Sights" },
+        { colorClass: "legend-food", label: "Workshops / food activities" }
+      ];
+
+      createMap("itinerary-map-regional", [45.15, 9.80], 8, regionalPois);
+      createMap("itinerary-map-milan", [45.47, 9.19], 12, milanCityPois);
+      createLegend("itinerary-legend-regional", regionalLegend);
+      createLegend("itinerary-legend-milan", milanLegend);
     });
   </script>
 </head>
@@ -296,9 +378,26 @@ node</li>
 </ul>
 <h2 id="top-attractions-things-to-do-with-kids">Top Attractions &amp;
 Things to Do with Kids</h2>
-<div id="itinerary-map" role="region"
-aria-label="Map of itinerary locations"
+<h3 id="map-1-airports-milan-ferrari-museum">Map 1: Airports + Milan +
+Ferrari Museum</h3>
+<div id="itinerary-map-regional" role="region"
+aria-label="Map of airports, Milan city centre and Ferrari Museum"
+style="height:420px;margin:1rem 0;">
+
+</div>
+<div id="itinerary-legend-regional" role="note" aria-live="polite"
+aria-label="Legend for regional itinerary map">
+
+</div>
+<h3 id="map-2-milan-sights-hotel-base-areas">Map 2: Milan Sights + Hotel
+Base Areas</h3>
+<div id="itinerary-map-milan" role="region"
+aria-label="Map of Milan sights and hotel base areas"
 style="height:480px;margin:1rem 0;">
+
+</div>
+<div id="itinerary-legend-milan"
+aria-label="Legend for Milan itinerary map">
 
 </div>
 <blockquote>
