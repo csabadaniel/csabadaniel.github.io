@@ -169,7 +169,7 @@
     document.addEventListener("DOMContentLoaded", function () {
       if (typeof L === "undefined" || !document.getElementById("itinerary-map")) return;
 
-      const map = L.map("itinerary-map").setView([44.8, 9.8], 7);
+      const map = L.map("itinerary-map").setView([45.15, 9.80], 8);
 
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "© <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
@@ -177,7 +177,7 @@
 
       const colorByType = {
         airport: "#2563eb",
-        city:    "#16a34a",
+        hotel:   "#f59e0b",
         sight:   "#7c3aed",
         food:    "#dc2626",
         default: "#6b7280"
@@ -185,38 +185,28 @@
 
       const pois = [
         // Airports
-        { lat: 45.6694, lng:  9.7042, name: "BGY - Milan Bergamo",  type: "airport" },
-        { lat: 45.6306, lng:  8.7231, name: "MXP - Milan Malpensa", type: "airport" },
-        { lat: 44.4133, lng:  8.8375, name: "GOA - Genoa",          type: "airport" },
-        { lat: 44.5354, lng: 11.2887, name: "BLQ - Bologna",        type: "airport" },
-        { lat: 44.8245, lng: 10.2964, name: "PMF - Parma",          type: "airport" },
-        { lat: 43.6839, lng: 10.3927, name: "PSA - Pisa",           type: "airport" },
+        { lat: 45.6694, lng:  9.7042, name: "BGY - Milan Bergamo",                     type: "airport" },
+        { lat: 45.6306, lng:  8.7231, name: "MXP - Milan Malpensa",                    type: "airport" },
 
-        // Cities
-        { lat: 45.4642, lng:  9.1900, name: "Milan",                type: "city" },
-        { lat: 44.4949, lng: 11.3426, name: "Bologna",              type: "city" },
-        { lat: 44.6488, lng: 10.9255, name: "Modena",               type: "city" },
-        { lat: 45.4384, lng: 10.9916, name: "Verona",               type: "city" },
-        { lat: 44.4056, lng:  8.9463, name: "Genoa",                type: "city" },
+        // Recommended hotel base areas
+        { lat: 45.5178, lng:  9.2310, name: "Sesto Marelli / Sesto San Giovanni",      type: "hotel" },
+        { lat: 45.4832, lng:  9.2328, name: "Lambrate / Città Studi",                  type: "hotel" },
+        { lat: 45.5037, lng:  9.2231, name: "Turro / Gorla / Precotto",                type: "hotel" },
+        { lat: 45.4665, lng:  9.1450, name: "Bande Nere / Gambara / De Angeli",        type: "hotel" },
+        { lat: 45.5062, lng:  9.1843, name: "Affori / Dergano / Maciachini",           type: "hotel" },
 
         // Sights
-        { lat: 44.5309, lng: 10.8701, name: "Ferrari Museum, Maranello",              type: "sight" },
-        { lat: 44.1351, lng:  9.6837, name: "Cinque Terre (Vernazza)",                type: "sight" },
-        { lat: 43.7230, lng: 10.3966, name: "Leaning Tower of Pisa",                 type: "sight" },
-        { lat: 45.4641, lng:  9.1919, name: "Milan Duomo",                           type: "sight" },
+        { lat: 44.5309, lng: 10.8701, name: "Ferrari Museum, Maranello",               type: "sight" },
+        { lat: 45.4641, lng:  9.1919, name: "Milan Duomo",                             type: "sight" },
+        { lat: 45.4656, lng:  9.1887, name: "Leonardo3 Museum",                        type: "sight" },
         { lat: 45.4602, lng:  9.1724, name: "Leonardo Museum of Science & Technology", type: "sight" },
-        { lat: 45.4781, lng:  9.1240, name: "San Siro Stadium",                      type: "sight" },
-        { lat: 45.6156, lng:  9.2811, name: "Monza F1 Circuit",                      type: "sight" },
-        { lat: 45.4705, lng:  9.1794, name: "Castello Sforzesco",                    type: "sight" },
-        { lat: 45.4659, lng:  9.1701, name: "The Last Supper (Cenacolo)",            type: "sight" },
-        { lat: 45.4659, lng:  9.1895, name: "Galleria Vittorio Emanuele II",         type: "sight" },
-        { lat: 44.3035, lng:  9.2099, name: "Portofino",                             type: "sight" },
-        { lat: 44.3347, lng:  9.2138, name: "Santa Margherita Ligure",               type: "sight" },
-        { lat: 45.4385, lng: 10.9937, name: "Verona Arena",                          type: "sight" },
+        { lat: 45.4781, lng:  9.1240, name: "San Siro Stadium",                        type: "sight" },
+        { lat: 45.4705, lng:  9.1794, name: "Castello Sforzesco",                      type: "sight" },
+        { lat: 45.4659, lng:  9.1701, name: "The Last Supper (Cenacolo)",              type: "sight" },
+        { lat: 45.4659, lng:  9.1895, name: "Galleria Vittorio Emanuele II",           type: "sight" },
 
         // Food & workshops
-        { lat: 45.4642, lng:  9.1900, name: "Pizza-making class (Milan)",            type: "food" },
-        { lat: 45.4642, lng:  9.1850, name: "Gelato & chocolate workshop (Milan)",   type: "food" }
+        { lat: 45.4642, lng:  9.1900, name: "Pizza, chocolate and gelato workshops",   type: "food" }
       ];
 
       pois.forEach(function (p) {
@@ -236,7 +226,7 @@
 <header id="title-block-header">
 <h1 class="title">Italy Trip Itinerary</h1>
 </header>
-<h1 id="italy-trip-itinerary">Italy Trip Itinerary</h1>
+<h1 id="milan-trip-itinerary">Milan Trip Itinerary</h1>
 <h2 id="travelling-party">Travelling Party</h2>
 <ul>
 <li>2 adults</li>
@@ -247,35 +237,63 @@
 <li>Maximum date range (Brooklands College half term + surrounding
 weekends): 24 October 2026 to 1 November 2026</li>
 </ul>
+<h2 id="recommended-trip-length-day-plan">Recommended Trip Length &amp;
+Day Plan</h2>
+<ul>
+<li>Recommended length: <strong>5 days total</strong> (including arrival
+and departure days)</li>
+<li>Why this works: enough time for Milan highlights plus one full
+Ferrari Museum day trip without rushing children</li>
+</ul>
+<h3 id="high-level-day-by-day-5-days">High-Level Day-by-Day (5
+Days)</h3>
+<ol type="1">
+<li><strong>Day 1 (Arrival in Milan):</strong> check-in, local walk,
+light sightseeing near hotel area, easy dinner</li>
+<li><strong>Day 2 (Milan Core):</strong> Duomo (interior + rooftop),
+Galleria Vittorio Emanuele II, Castello Sforzesco</li>
+<li><strong>Day 3 (Ferrari Day):</strong> full-day train trip to Modena
++ transfer to Maranello for Ferrari Museum</li>
+<li><strong>Day 4 (Milan Interests):</strong> science museum and/or San
+Siro, plus flexible family activity (pizza-making or gelato/chocolate
+workshop)</li>
+<li><strong>Day 5 (Departure):</strong> light final activity and
+transfer to airport</li>
+</ol>
+<p>If flight times are very early outbound or very late inbound,
+consider adding a 6th day for a more relaxed pace.</p>
 <h2 id="flight-constraints">Flight Constraints</h2>
 <ul>
 <li>UK departure airport: London Stansted (STN)</li>
 <li>UK return airport: London Stansted (STN)</li>
 <li>Airline preference: Ryanair (to keep costs down)</li>
-<li>Open-jaw in Italy allowed: Yes (arrive and depart from different
-Italian airports)</li>
+<li>Open-jaw across Milan airports allowed: Yes (arrive and depart from
+different Milan-area airports if useful)</li>
 </ul>
-<h2
-id="potential-italian-airports-northwest-italy-ryanair-from-stn">Potential
-Italian Airports (North/West Italy, Ryanair from STN)</h2>
+<h2 id="potential-milan-airports">Potential Milan Airports</h2>
 <ul>
 <li>Milan Bergamo (BGY) - strong low-cost option for Milan/Lombardy</li>
 <li>Milan Malpensa (MXP) - another Milan gateway</li>
-<li>Genoa (GOA) - Liguria / Italian Riviera access</li>
-<li>Bologna (BLQ) - useful northern hub with fast rail links</li>
-<li>Parma (PMF) - smaller Emilia-Romagna option; verify Ryanair STN
-service as it is limited</li>
-<li>Pisa (PSA) - useful for western Tuscany / Ligurian side
-connections</li>
-</ul>
-<h2 id="open-jaw-ideas-stn-both-ways">Open-Jaw Ideas (STN both
-ways)</h2>
-<ul>
-<li>STN -&gt; Genoa (GOA), Bologna (BLQ) -&gt; STN</li>
-<li>STN -&gt; Pisa (PSA), Milan Malpensa (MXP) -&gt; STN</li>
 </ul>
 <p>Note: Routes and frequencies can change seasonally; verify exact
-October availability in Ryanair before booking.</p>
+October availability before booking.</p>
+<h2 id="best-fit-hotel-areas-milan">Best-Fit Hotel Areas (Milan)</h2>
+<p>Target hotels with public-transport times of <strong>45 minutes or
+less</strong> to both Duomo and Milano Centrale.</p>
+<ul>
+<li><strong>Sesto Marelli / Sesto San Giovanni (M1):</strong> best
+value-to-connection balance; direct metro to central Milan and practical
+for family budgets</li>
+<li><strong>Lambrate / Città Studi:</strong> strong overall balance of
+price, local environment, and reliable transport links</li>
+<li><strong>Turro / Gorla / Precotto (M1 corridor):</strong> practical
+budget-focused areas with straightforward metro access</li>
+<li><strong>Bande Nere / Gambara / De Angeli (west side):</strong>
+calmer residential feel with good metro links into the centre</li>
+<li><strong>Affori / Dergano / Maciachini:</strong> usually better value
+with solid public transport, especially around Maciachini as a transport
+node</li>
+</ul>
 <h2 id="top-attractions-things-to-do-with-kids">Top Attractions &amp;
 Things to Do with Kids</h2>
 <div id="itinerary-map" role="region"
@@ -290,86 +308,57 @@ All other attractions include a <em>Getting there</em> note.</p>
 </blockquote>
 <h3 id="for-the-whole-family">For the Whole Family</h3>
 <ul>
-<li><strong>Ferrari Museum (Maranello, near Modena/Bologna)</strong> —
+<li><strong>Ferrari Museum (Maranello, near Modena)</strong> —
 simulators, iconic cars, and a motorsport history that appeals to all
-ages; easy day trip from Bologna or Modena. <em>Getting there: train to
-Modena (~25 min from Bologna), then SETA bus 780 to Maranello (~25 min);
-buses are infrequent — check timetable in advance.</em></li>
-<li><strong>Cinque Terre</strong> — colourful hilltop villages, easy
-coastal walks, gelato stops; Vernazza and Manarola are the most
-photogenic, best enjoyed on foot between villages or by boat.
-<em>Getting there: Trenitalia regional train on the Genoa–La Spezia
-line; each village has its own station. Buy a Cinque Terre Card which
-bundles train hops and trail access.</em></li>
-<li><strong>Pisa: Leaning Tower &amp; Piazza dei Miracoli</strong> — the
-tower, baptistery and cathedral together are genuinely stunning; fun for
-photos (the classic “holding it up” shot) and impressive for all ages.
-<em>Getting there: 20 min walk from Pisa Centrale station, or take LAM
-Rossa bus (stops outside the station) for a 5 min ride.</em></li>
+ages; easy full-day trip from Milan. <em>Getting there: train from Milan
+Centrale to Modena (typically ~2 hours with one change), then SETA bus
+780 to Maranello (~25 min); buses are infrequent — check timetable in
+advance.</em></li>
 <li><strong>Milan’s Duomo — interior &amp; rooftop walk</strong> — the
 soaring Gothic interior is unmissable; the rooftop terraces are hands-on
 and give great views over the city</li>
-<li><strong>Pizza-making class</strong> — widely available in larger
-cities; interactive and memorable for all ages</li>
+<li><strong>Pizza, chocolate and gelato workshops</strong> — widely
+available in Milan; hands-on, interactive and memorable for all
+ages</li>
 </ul>
 <h3 id="especially-for-the-13-year-old-boy">Especially for the
 13-year-old Boy</h3>
 <ul>
-<li><strong>Leonardo da Vinci National Museum of Science &amp;
-Technology (Milan)</strong> — interactive science exhibits, full-scale
-ship models, historical technology; one of the largest science museums
-in Europe</li>
-<li><strong>FC Internazionale / AC Milan stadium tour (San Siro,
-Milan)</strong> — stadium tour and museum; football-mad boys will love
+<li><strong>Leonardo Museum of Science &amp; Technology</strong> —
+interactive science exhibits, full-scale ship models, historical
+technology; one of the largest science museums in Europe</li>
+<li><strong>FC Internazionale / AC Milan stadium tour (San
+Siro)</strong> — stadium tour and museum; football-mad boys will love
 it. <em>Getting there: Metro M5 (Lilla) to San Siro Stadio, or M1
 (Rossa) to Lotto then ~20 min walk; not central but very easy by
 metro.</em></li>
-<li><strong>Monza Formula 1 Circuit</strong> — museum and track tours
-available; close to Milan (30 min), strong motorsport tie-in with the
-Ferrari Museum visit. <em>Getting there: train from Milan Centrale to
-Monza (~15 min), then 25 min walk through the park or a short taxi ride
-to the circuit entrance.</em></li>
 </ul>
 <h3 id="especially-for-the-10-year-old-girl">Especially for the
 10-year-old Girl</h3>
 <ul>
-<li><strong>Castello Sforzesco (Milan)</strong> — a real castle with
-towers and a moat; castle exploration is reliably exciting at this
-age</li>
-<li><strong>Chocolate and gelato workshops</strong> — widely available
-across northern Italian cities; hands-on and she gets to eat the
-result</li>
+<li><strong>Castello Sforzesco</strong> — a real castle with towers and
+a moat; castle exploration is reliably exciting at this age</li>
+<li><strong>Leonardo3 Museum</strong> — interactive models and digital
+reconstructions of Leonardo’s inventions; engaging for older children
+and easy to combine with Duomo/Galleria visits</li>
 </ul>
 <h3 id="parents-must-sees">Parents’ Must-Sees</h3>
 <ul>
-<li><strong>The Last Supper (Cenacolo Vinciano, Milan)</strong> —
-Leonardo da Vinci’s mural; tickets must be booked months in advance,
-strictly timed entry; non-negotiable if passing through Milan</li>
-<li><strong>Galleria Vittorio Emanuele II (Milan)</strong> — one of the
-world’s oldest and most beautiful shopping arcades; worth a stroll and
-an overpriced coffee</li>
-<li><strong>Portofino &amp; Santa Margherita Ligure</strong> — charming
-Ligurian harbour towns; Portofino especially is a classic adult
-bucket-list stop. <em>Getting there: train from Genoa to Santa
-Margherita Ligure-Portofino station (~35 min), then local bus 782 (~25
-min) or a seasonal ferry to Portofino harbour.</em></li>
-<li><strong>Verona’s Arena &amp; old town</strong> — a near-perfectly
-preserved Roman amphitheatre; the medieval streets and Juliet’s balcony
-make for an excellent half-day. <em>Getting there: Verona Porta Nuova
-station is served by fast trains from Milan (~1 h 10 min); the Arena and
-old town are a 20 min walk or short bus ride (lines 11/12/13) from the
-station.</em></li>
+<li><strong>The Last Supper (Cenacolo Vinciano)</strong> — Leonardo da
+Vinci’s mural; tickets must be booked months in advance, strictly timed
+entry; non-negotiable if passing through Milan</li>
+<li><strong>Galleria Vittorio Emanuele II</strong> — one of the world’s
+oldest and most beautiful shopping arcades; worth a stroll and an
+overpriced coffee</li>
 </ul>
 <h3 id="seasonal-notes-late-october">Seasonal Notes (Late October)</h3>
 <ul>
 <li>Halloween season means some attractions run themed events — check
 dates carefully</li>
-<li>Autumn colours are beautiful across northern Italy and the Tuscan
-hills</li>
+<li>Autumn weather is usually good for museums, city walking, and day
+trips in Lombardy and Emilia-Romagna</li>
 <li>Crowds are low compared to summer; many outdoor sites are pleasant
 to visit</li>
-<li>Some beach-side Cinque Terre paths and boat services may have
-reduced hours — verify before visiting</li>
 </ul>
 </body>
 </html>
